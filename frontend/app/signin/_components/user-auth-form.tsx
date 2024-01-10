@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const { toast } = useToast();
+    const router = useRouter();
+
     async function onSubmit(event: React.SyntheticEvent) {
         event.preventDefault()
         setIsLoading(true)
@@ -39,6 +42,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             })
             setIsLoading(false);
             return;
+        } else {
+            setIsLoading(false);
+            router.push("/");
+
+            toast({
+                variant: "success",
+                description: response.message,
+            });
+            
         }
 
         setTimeout(() => {
